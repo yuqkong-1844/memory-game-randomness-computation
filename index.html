@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMD/Oq5m8i/hT6Vz/g/vC/K4XjQ+f1M/TzP0kK2mP6l6kFw8Vf9I7G6B5Q..." 
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* --- COLOR PALETTE --- */
+        :root {
+            --color-cream: #FAF8F3; 
+            --color-muted-blue: #A6C6C7;
+            --color-terracotta: #C7583D; /* Primary Action Highlight */
+            --color-mustard: #E8A90F;
+            --color-dark-text: #1A2333;
+            --color-highlight-turn: #E8A90F; /* Mustard for turn highlight */
+        }
+
+        /* --- GLOBAL SETTINGS --- */
+        body {
+            background-color: var(--color-cream);
+            color: var(--color-dark-text);
+            /* Custom scrollbar */
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-mustard) transparent;
+        }
+        body::-webkit-scrollbar { width: 8px; }
+        body::-webkit-scrollbar-thumb { background-color: var(--color-mustard); border-radius: 4px; }
+
+        /* --- CARD STYLES (Unchanged) --- */
+        .card-container { perspective: 1000px; aspect-ratio: 1/1; }
+        .card { transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); cursor: pointer; box-shadow: 0 4px 6px -1 rgba(0,0,0,0.1); position: relative; width: 100%; height: 100%; }
+        .card.is-flipped { transform: rotateY(180deg); pointer-events: none; }
+        .card.is-matched { cursor: pointer; pointer-events: auto; }
+        .card-face, .card-back-pattern { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; border-radius: 0.75rem; }
+        .card-face { transform: rotateY(180deg); background-color: white; border: 2px solid #e5e7eb; padding: 0.5rem; overflow: hidden; }
+        .card-face img { width: 100%; height: 100%; object-fit: cover; border-radius: 0.5rem; }
+        .card-back-pattern { background-color: var(--color-muted-blue); background-image: url('cardback.png'); background-size: cover; background-position: center; }
+        .card-back-pattern.is-matched { background-color: var(--color-terracotta); opacity: 0.9; }
+        
+        /* --- TURN INDICATOR STYLE (Unchanged) --- */
+        .player-turn { border: 3px solid transparent; transition: border-color 0.3s ease-in-out, transform 0.1s ease-out; }
+        .player-turn.is-active { border-color: var(--color-highlight-turn); transform: scale(1.02); box-shadow: 0 4px 12px rgba(232, 169, 15, 0.3); }
+
+        /* --- UNIFIED BUTTON STYLE (The "IKEA" Style) --- */
+        .minimal-button {
+            display: inline-flex; /* Changed to flex for icon alignment */
+            align-items: center; /* Ensures icon and text are centered vertically */
+            padding: 0.6rem 1.5rem;
+            border-radius: 9999px;
+            background-color: white;
+            color: var(--color-dark-text);
+            border: 2px solid var(--color-muted-blue);
+            font-weight: 600;
+            font-size: 1rem;
+            line-height: 1.5;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .minimal-button:hover {
+            background-color: var(--color-muted-blue);
+            color: white;
+            border-color: var(--color-muted-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        /* Custom hover for the highlighted primary button */
+        #reset-button.bg-\[var\(--color-terracotta\)\]:hover {
+            background-color: white;
+            color: var(--color-terracotta);
+        }
+        .minimal-button:active {
+            transform: translateY(0);
+        }
+
+        /* --- CONTENT & MODAL STYLING (Updated) --- */
+        .katex-display { margin: 1rem 0; padding: 0.5rem; background-color: white; border-radius: 0.5rem; border: 1px solid #e5e7eb; overflow-x: auto; text-align: center; }
+        .modal-content-transition { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-out; }
+        /* Ensure the new modal is included in the transition list */
+        #game-over-modal, #card-story-modal, #image-viewer-modal, #about-modal { transition: opacity 0.3s ease-out; } 
+        #card-story-modal-content { max-height: 80vh; overflow-y: auto; }
+        #story-content p { margin-bottom: 1rem; line-height: 1.6; }
+        #story-content h3 { font-size: 1.75rem; font-weight: 800; color: var(--color-terracotta); margin-bottom: 1rem; display: none; }
+        #story-content h4 { font-size: 1.25rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        #image-viewer-modal-content { max-width: 90vw; max-height: 90vh; display: flex; flex-direction: column; align-items: center; }
+        #zoomed-image { max-width: 100%; max-height: 75vh; object-fit: contain; margin-bottom: 1.5rem; border-radius: 0.5rem; background: white; }
+        .fixed.hidden { width: 0 !important; height: 0 !important; pointer-events: none; }
+        .fixed.hidden > div { display: none !important; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4 sm:p-8 font-sans overflow-x-hidden">
+
+    <div class="flex justify-center mt-8 z-20 w-full max-w-5xl mx-auto">
+        <div class="minimal-controls flex justify-center flex-wrap gap-4 max-w-xl">
+            
+            <button id="reset-button" 
+                    class="minimal-button 
+                            bg-[var(--color-terracotta)] text-white border-[var(--color-terracotta)] 
+                            hover:bg-white hover:text-[var(--color-terracotta)] 
+                            text-base sm:text-lg px-6 order-1"> New Game
+            </button>
+
+            <div class="flex gap-4 order-2">
+                <button id="mode-switch-button" class="minimal-button">
+                    <i class="fa-solid fa-users mr-2"></i> Mode: <span id="current-mode"> Single Player</span>
+                </button>
+                <button id="style-switch-button" class="minimal-button">
+                    <i class="fa-solid fa-palette mr-2"></i> Style: <span id="current-style"> Original</span>
+                </button>
+            </div>
+
+            <button onclick="window.location.href='exhibition.html'" class="minimal-button">
+                    <i class="fa-solid fa-images mr-2"></i> Exhibition
+            </button>
+
+
+
+            <button id="cheat-button" 
+                    class="minimal-button 
+                            text-xs py-1 px-3 border-dashed opacity-70 
+                            hover:opacity-100 order-3 mt-2 sm:mt-0">
+                <i class="fa-solid fa-lightbulb mr-1"></i> Reveal All
+            </button>
+            
+        </div>
+    </div>
+    <div id="player-score-area" class="w-full max-w-5xl mx-auto mt-6 hidden justify-center gap-6">
+        <div id="player1-score-display" class="player-turn bg-white p-4 rounded-xl shadow-md text-center w-40">
+            <h4 class="text-lg font-bold text-[var(--color-terracotta)]">Player 1</h4>
+            <p class="text-3xl font-extrabold text-[var(--color-dark-text)]"><span id="player1-score">0</span></p>
+            <p class="text-xs text-gray-500">Pairs Matched</p>
+        </div>
+        <div id="player2-score-display" class="player-turn bg-white p-4 rounded-xl shadow-md text-center w-40">
+            <h4 class="text-lg font-bold text-[var(--color-terracotta)]">Player 2</h4>
+            <p class="text-3xl font-extrabold text-[var(--color-dark-text)]"><span id="player2-score">0</span></p>
+            <p class="text-xs text-gray-500">Pairs Matched</p>
+        </div>
+    </div>
+
+    <div id="game-grid" class="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4 mt-8 mx-auto w-full max-w-5xl"></div>
+
+    
+    <footer class="w-full max-w-5xl mx-auto mt-12 mb-4 text-center">
+        <button id="about-button" class="text-sm text-gray-400 hover:text-[var(--color-terracotta)] transition-colors opacity-70 hover:opacity-100 p-2 font-medium">
+            About
+        </button>
+    </footer>
+    
+    <div id="about-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center p-4 z-50 opacity-0">
+        <div id="about-modal-content" class="bg-white p-8 rounded-xl shadow-xl max-w-lg w-full transform scale-95 opacity-0 modal-content-transition">
+            <h2 class="text-3xl font-extrabold text-[var(--color-terracotta)] mb-4 border-b pb-2" id="about-title"></h2>
+            
+            <div id="about-dynamic-content" class="text-gray-700 text-left overflow-y-auto max-h-[60vh] pr-4">
+                <p class="text-center text-gray-400">Loading...</p>
+            </div>
+
+            <div class="mt-8 text-center">
+                <button id="about-close-button" class="minimal-button">Close</button>
+            </div>
+        </div>
+    </div>
+    <div id="game-over-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center p-4 z-50 opacity-0">
+        <div class="bg-white p-8 rounded-xl shadow-xl text-center max-w-md w-full transform scale-95 opacity-0 modal-content-transition" id="game-over-modal-content">
+            <h2 class="text-4xl font-extrabold text-[var(--color-terracotta)] mb-4">Game Over!</h2>
+            <p id="game-over-message" class="text-xl mb-8 text-gray-600">All pairs found successfully.</p>
+            <button id="modal-close-button" class="minimal-button">Close</button>
+        </div>
+    </div>
+
+    <div id="card-story-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center p-4 z-50 opacity-0">
+        <div id="card-story-modal-content" class="bg-white p-8 rounded-xl shadow-xl max-w-lg w-full transform scale-95 opacity-0 modal-content-transition">
+            <div class="flex items-start mb-6 border-b border-gray-100 pb-6">
+                <img id="story-card-image" class="w-24 h-24 object-cover rounded-lg mr-6 border border-gray-200 shadow-sm cursor-pointer hover:opacity-90 transition-opacity" alt="Card image">
+                <div>
+                    <h3 class="text-2xl font-bold text-[var(--color-terracotta)] m-0 leading-tight" id="story-title">Card Story</h3>
+                    <p class="text-sm text-gray-400 mt-2 font-medium">Click image to zoom</p>
+                </div>
+            </div>
+            <div id="story-content" class="text-gray-700 text-left"></div>
+            
+            <div class="mt-8 text-center flex justify-center gap-4">
+                <button id="language-button" class="minimal-button">Language: <span id="current-lang">EN</span></button>
+                <button id="story-close-button" class="minimal-button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="image-viewer-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[60] opacity-0">
+        <div id="image-viewer-modal-content" class="transform scale-95 opacity-0 modal-content-transition">
+            <img id="zoomed-image" src="" alt="Zoomed Card Image">
+            <div class="flex justify-center gap-4">
+                <button id="image-save-button" class="minimal-button">Download</button>
+                <button id="image-close-button" class="minimal-button">Close Viewer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exhibition Gallery</title>
+
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* --- COLOR PALETTE --- */
+        :root {
+            --color-cream: #FAF8F3; 
+            --color-muted-blue: #A6C6C7;
+            --color-terracotta: #C7583D; /* Primary Action Highlight */
+            --color-mustard: #E8A90F;
+            --color-dark-text: #1A2333;
+        }
+
+        /* --- GLOBAL SETTINGS --- */
+        body {
+            background-color: var(--color-cream);
+            color: var(--color-dark-text);
+        }
+        
+        /* --- UNIFIED BUTTON STYLE --- */
+        .minimal-button {
+            /* display: inline-flex is crucial for content-fitting width */
+            display: inline-flex; 
+            align-items: center;
+            padding: 0.6rem 1.5rem;
+            border-radius: 9999px;
+            background-color: white;
+            color: var(--color-dark-text);
+            border: 2px solid var(--color-muted-blue);
+            font-weight: 600;
+            transition: all 0.2s;
+            /* Mobile touch target improvement */
+            min-height: 44px; 
+            justify-content: center;
+        }
+        .minimal-button:hover {
+            background-color: var(--color-muted-blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .minimal-button:active {
+            transform: translateY(0);
+        }
+        
+        /* --- MODAL STYLES --- */
+        /* Ensure modal content is scrollable on small screens */
+        #card-story-modal-content { 
+            max-height: 90vh; 
+            overflow-y: auto; 
+        } 
+        #image-viewer-modal-content { 
+            max-width: 95vw; 
+            max-height: 95vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+        #zoomed-image { 
+            max-width: 100%; 
+            max-height: 85vh; 
+            object-fit: contain; 
+            margin-bottom: 1.5rem; 
+            border-radius: 0.5rem; 
+            background: white; 
+        }
+    </style>
+</head>
+
+<body class="min-h-screen p-4 sm:p-6 flex flex-col items-center">
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-[var(--color-terracotta)] mt-4 mb-6 text-center">
+        Exhibition Gallery
+    </h1>
+
+    <div class="flex flex-col sm:flex-row justify-center gap-3 w-full max-w-sm sm:max-w-xl mb-6">
+        <button onclick="window.location.href='./index.html'" class="minimal-button sm:w-auto">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Back to Game
+        </button>
+
+        <button id="exhibition-style-button" class="minimal-button sm:w-auto">
+            <i class="fa-solid fa-palette mr-2"></i> Style: <span id="exhibit-style-display">Base</span>
+        </button>
+    </div>
+
+    <hr class="w-full max-w-6xl border-gray-200 mb-6">
+
+    <div id="exhibition-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 w-full max-w-6xl">
+        </div>
+
+    <div id="card-story-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center p-4 z-50 opacity-0 transition-opacity duration-300">
+        <div id="card-story-modal-content" class="bg-white p-6 sm:p-8 rounded-xl shadow-2xl max-w-full sm:max-w-3xl w-full max-h-[90vh] overflow-y-auto transform scale-95 opacity-0 transition-all duration-300">
+            
+            <div class="flex flex-col sm:flex-row items-center sm:items-start mb-4 sm:mb-6 border-b border-gray-100 pb-4 sm:pb-6 gap-4">
+                <img id="story-card-image" class="w-full h-auto sm:w-48 sm:h-auto object-cover rounded-lg border border-gray-200 shadow-md cursor-pointer">
+                <div class="flex-1 w-full text-center sm:text-left">
+                    <h3 class="text-xl sm:text-2xl font-bold text-[var(--color-terracotta)] m-0 leading-tight" id="story-title">Story</h3>
+                    <p class="text-sm text-gray-400 mt-2">Click image to zoom</p>
+                </div>
+            </div>
+            
+            <div id="story-content" class="text-gray-700 text-left overflow-y-auto max-h-[50vh] sm:max-h-[60vh] text-sm sm:text-base pr-2 sm:pr-0"></div>
+
+            <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+                <button id="language-button" class="minimal-button sm:w-auto">
+                    Language: <span id="current-lang">EN</span>
+                </button>
+                <button id="story-close-button" class="minimal-button sm:w-auto">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="image-viewer-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden items-center justify-center p-4 z-[60] opacity-0 transition-opacity duration-300">
+        <div id="image-viewer-modal-content" class="transform scale-95 opacity-0 transition-all duration-300 flex flex-col items-center max-h-full">
+            <img id="zoomed-image" class="max-h-[85vh] sm:max-h-[75vh] max-w-full rounded-lg mb-4">
+            <div class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 w-full max-w-sm">
+                <button id="image-save-button" class="minimal-button sm:w-auto">Download</button>
+                <button id="image-close-button" class="minimal-button sm:w-auto">Close Viewer</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="exhibition.js"></script>
+
+</body>
+</html>
