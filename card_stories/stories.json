@@ -1,0 +1,312 @@
+[
+  {
+    "image": "JL.png",
+    "title": "Johnson–Lindenstrauss (JL) Lemma 📉",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "The **JL Lemma** is a powerful result in dimension reduction. It states that a high-dimensional set of $n$ points can be linearly projected onto a much lower-dimensional space, $k \\ll D$, such that the distances between the points are nearly preserved."
+      },
+      {
+        "type": "heading",
+        "content": "The Key Result"
+      },
+      {
+        "type": "equation",
+        "latex": "\\sqrt{1-\\epsilon}\\|u-v\\| \\le \\|f(u)-f(v)\\| \\le \\sqrt{1+\\epsilon}\\|u-v\\|"
+      },
+      {
+        "type": "note",
+        "content": "Where $\\epsilon$ is an arbitrarily small distortion factor, $u$ and $v$ are two points in the original space, and $f(u)$ and $f(v)$ are their projections in the lower-dimensional space. The required dimension $k$ depends logarithmically on $n$ ($k \\approx O(\\log n)$)."
+      }
+    ]
+  },
+  {
+    "image": "coupon.png",
+    "title": "The Coupon Collector's Problem 🎫",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "If there are $n$ unique types of coupons, how many draws, $T_n$, must one expect to make to collect all types? This is a classic problem in probability theory."
+      },
+      {
+        "type": "equation",
+        "latex": "E[T_n] = n \\sum_{i=1}^{n} \\frac{1}{i} \\approx n \\ln n"
+      },
+      {
+        "type": "paragraph",
+        "content": "The expected number of draws, $E[T_n]$, grows as $n \\ln n$ (approximately), meaning you need significantly more draws than $n$ to guarantee completion."
+      }
+    ]
+  },
+  {
+    "image": "Buffon.png",
+    "title": "Buffon's Needle Experiment 📌",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "Buffon's Needle problem is a classic example of **geometric probability**. It shows how one can estimate the value of $\\pi$ by dropping needles onto a floor with parallel lines."
+      },
+      {
+        "type": "equation",
+        "latex": "P = \\frac{2l}{\\pi d}"
+      },
+      {
+        "type": "note",
+        "content": "Where $P$ is the probability that a needle of length $l$ crosses a line, and $d$ is the distance between the lines. If $l=d$, the probability is $2/\\pi$. You can estimate $\\pi$ by counting the crossings!"
+      }
+    ]
+  },
+  {
+    "image": "centrallimit.png",
+    "title": "The Central Limit Theorem (CLT) 🔔",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "The **CLT** is a cornerstone of statistics. It states that, under broad conditions, the sum of a large number of independent random variables will be **approximately normally distributed**, regardless of the original distribution of the variables."
+      },
+      {
+        "type": "heading",
+        "content": "The key idea"
+      },
+      {
+        "type": "equation",
+        "latex": "\\bar{X}_n \\xrightarrow{d} \\mathcal{N}\\left(\\mu, \\frac{\\sigma^2}{n}\\right)"
+      },
+      {
+        "type": "note",
+        "content": "Where $\\bar{X}_n$ is the sample mean, $\\mu$ is the population mean, and $\\sigma^2$ is the population variance. As $n \\to \\infty$, the distribution of the mean converges to a normal distribution."
+      }
+    ]
+  },
+  {
+    "image": "crossing.png",
+    "title": "Crossing Number Theorem 🛤️",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "The **Crossing Number Theorem** relates the minimum number of edge crossings in a drawing of a graph to the number of vertices ($n$) and the number of edges ($m$). Minimizing crossings is important for visualization."
+      },
+      {
+        "type": "heading",
+        "content": "The Bound"
+      },
+      {
+        "type": "equation",
+        "latex": "\\text{cr}(G) \\ge c \\frac{m^3}{n^2}"
+      },
+      {
+        "type": "note",
+        "content": "Where $\\text{cr}(G)$ is the crossing number of graph $G$, and $c$ is a constant. This bound is often proved using the **Probabilistic Method** by randomly selecting a subset of vertices."
+      }
+    ]
+  },
+  {
+    "image": "Lasvegas.png",
+    "title": "Las Vegas Algorithms 🎰",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "**Las Vegas algorithms** are randomized algorithms that always produce the correct result, but their running time is random (or probabilistic). They never risk giving the wrong answer."
+      },
+      {
+        "type": "heading",
+        "content": "Contrast with Monte Carlo"
+      },
+      {
+        "type": "paragraph",
+        "content": "Unlike Monte Carlo algorithms, which might return an incorrect result with a small probability, Las Vegas algorithms focus on guaranteeing correctness while minimizing the expected runtime. Examples include randomized quicksort."
+      }
+    ]
+  },
+  {
+    "image": "makov.png",
+    "title": "Markov Inequality ⚖️",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "The **Markov Inequality** provides a simple upper bound on the probability that a non-negative random variable ($X$) is greater than or equal to some positive constant ($a$), using only the mean ($E[X]$)."
+      },
+      {
+        "type": "heading",
+        "content": "The Inequality"
+      },
+      {
+        "type": "equation",
+        "latex": "P(X \\ge a) \\le \\frac{E[X]}{a}"
+      },
+      {
+        "type": "note",
+        "content": "This is a weak but universally applicable bound. It requires $X$ to be non-negative and $a > 0$. It is often the first step in proving stronger inequalities, like Chebyshev's."
+      }
+    ]
+  },
+  {
+    "image": "martingale.png",
+    "title": "Martingale Sequence 🎲",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "A **Martingale** is a sequence of random variables (often representing the wealth of a gambler) where the conditional expectation of the next value, given all past values, is equal to the current value."
+      },
+      {
+        "type": "heading",
+        "content": "The Definition"
+      },
+      {
+        "type": "equation",
+        "latex": "E[X_{t+1} \\mid X_1, \\dots, X_t] = X_t"
+      },
+      {
+        "type": "note",
+        "content": "In gambling, this means the game is fair: based on past results, the expected outcome of the next round is simply the current state. This concept is fundamental to advanced probability theory."
+      }
+    ]
+  },
+  {
+    "image": "pairwiseind.png",
+    "title": "Pairwise Independence 🤝",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "**Pairwise independence** is a weaker condition than mutual independence. A set of events is pairwise independent if every pair of events is independent."
+      },
+      {
+        "type": "heading",
+        "content": "Why it matters"
+      },
+      {
+        "type": "paragraph",
+        "content": "A set of random variables can be pairwise independent without being mutually independent. This weaker condition is sometimes sufficient for proving results like Chebyshev's inequality, offering simpler constructions in randomized algorithms."
+      }
+    ]
+  },
+  {
+    "image": "Ramsey.png",
+    "title": "Ramsey Theory 🎈",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "**Ramsey Theory** explores the condition under which order must appear. The fundamental theorem states that complete disorder is impossible: given enough elements, a specific structure must exist."
+      },
+      {
+        "type": "heading",
+        "content": "Ramsey Number"
+      },
+      {
+        "type": "note",
+        "content": "$R(s, t)$ is the minimal integer $N$ such that any graph with $N$ vertices, if its edges are colored red and blue, must contain either a red clique of size $s$ or a blue clique of size $t$."
+      },
+      {
+        "type": "note",
+        "content": "$R(3,3)=6$: In any party of 6 people, there are at least three mutual acquaintances (a blue triangle) or three mutual strangers (a red triangle). Disorder is impossible! "
+      }
+    ]
+  },
+{
+  "image": "randomalg.png",
+  "title": "💡 Randomized Algorithms",
+  "sections": [
+    {
+      "type": "heading",
+      "content": "✨ What is a Randomized Algorithm?"
+    },
+    {
+      "type": "paragraph",
+      "content": "A **Randomized Algorithm** is a type of algorithm that incorporates randomness into its logic during execution, using sources like random number generation to guide its decision-making or processing path."
+    },
+    {
+      "type": "heading",
+      "content": "🚀 Key Advantages and Benefits"
+    },
+    {
+      "type": "paragraph",
+      "content": "The introduction of randomness offers significant benefits: it often leads to **greater efficiency** by achieving faster average-case running times compared to deterministic solutions. Furthermore, randomness can **greatly simplify the algorithm's design** and is a powerful tool for **avoiding the worst-case scenario** that specific, malicious inputs might otherwise trigger. This dual advantage of speed and robustness makes them indispensable in fields like data processing and distributed computing."
+    }
+  ]
+},
+  {
+    "image": "tvd.png",
+    "title": "Total Variation Distance (TVD) 📏",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "The **Total Variation Distance** is a measure of the difference between two probability distributions ($P$ and $Q$). It quantifies how far apart two distributions are."
+      },
+      {
+        "type": "heading",
+        "content": "The Formula"
+      },
+      {
+        "type": "equation",
+        "latex": "\\text{TVD}(P, Q) = \\frac{1}{2} \\sum_{x} |P(x) - Q(x)|"
+      },
+      {
+        "type": "note",
+        "content": "The TVD is equivalent to the maximum difference between the probabilities that $P$ and $Q$ assign to any single event $A$: $\\max_A |P(A) - Q(A)|$. It's widely used to analyze Markov chain mixing times."
+      }
+    ]
+  },
+  {
+    "image": "unbalancinglights.png",
+    "title": "💡 Unbalancing Lights Problem: Random Strategy for Maximization",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "The **Unbalancing Lights Problem** (a variation of the **Matrix Discrepancy Problem** or **Max Cut**) involves an $m \\times n$ matrix of light bulbs. The state of each bulb (ON/OFF) is jointly determined by its **initial configuration**, the state of its **row switch**, and the state of its **column switch**. Our objective is to design a strategy for setting the row and column switches to **maximize the total number of glowing (ON) bulbs**, regardless of the arbitrary initial setup. "
+      },
+      {
+        "type": "heading",
+        "content": "🎲 Randomized Strategy: Simple and Effective"
+      },
+      {
+        "type": "paragraph",
+        "content": "The simplest and most powerful approach to solving this problem is to use a **Randomized Algorithm**: choose the state for all switches **independently and uniformly at random**. This means every row switch is set to the 'flip' state with a probability of $1/2$, and the 'keep' state with a probability of $1/2$. Flip the column only when the majority is off."
+      }
+    ]
+  },
+  {
+    "image": "Azuma.png",
+    "title": "Azuma's Inequality ⚖️",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "The **Azuma's Inequality** is a powerful concentration inequality in probability theory that provides a bound on the probability that the final value of a **martingale** (or super-martingale/sub-martingale) deviates significantly from its initial value. It is a generalization of the Hoeffding's inequality and is particularly useful for analyzing random processes where successive steps are dependent, as long as the size of each step is bounded."
+      },
+      {
+        "type": "heading",
+        "content": "The Formal Statement (Two-Sided Bound for a Martingale)"
+      },
+      {
+        "type": "equation",
+        "latex": "P\\left(|X_n - X_0| \\ge t\\right) \\le 2 \\exp\\left(-\\frac{t^2}{2 \\sum_{k=1}^n c_k^2}\\right)"
+      },
+      {
+        "type": "note",
+        "content": "Here, $X_k$ is a martingale sequence, and $c_k$ is the bound on the $k^{th}$ increment: $|X_k - X_{k-1}| \\le c_k$ almost surely. It's often applied using the **Doob martingale** method to obtain concentration bounds for functions of independent random variables, leading to **McDiarmid's Inequality**."
+      }
+    ]
+  },
+  {
+    "image": "coupling.png",
+    "title": "Coupling 🔗",
+    "sections": [
+      {
+        "type": "paragraph",
+        "content": "**Coupling** is a versatile proof technique in probability theory used to compare two probability distributions, $P$ and $Q$. It involves constructing a **joint probability space** ($\\Omega, \\mathcal{F}, \\gamma$) with two random variables, $X'$ and $Y'$, such that $X'$ has the distribution $P$ and $Y'$ has the distribution $Q$. The pair $(X', Y')$ is called a coupling of $P$ and $Q$. The utility of the technique lies in designing the joint distribution $\\gamma$ to relate $X'$ and $Y'$ in a specific, desirable way (e.g., $X' \\le Y'$ or $X' = Y'$ after some time)."
+      },
+      {
+        "type": "heading",
+        "content": "The Coupling Inequality"
+      },
+      {
+        "type": "equation",
+        "latex": "\\text{TVD}(P, Q) \\le P(X' \\ne Y')"
+      },
+      {
+        "type": "note",
+        "content": "This inequality links the probability that the coupled variables differ to the **Total Variation Distance (TVD)** between their marginal distributions. By proving that the coupled variables meet (i.e., $X' = Y'$) quickly, coupling is extensively used to derive mixing time bounds for Markov chains, demonstrate stochastic domination, and prove various limit theorems."
+      }
+    ]
+  }
+]
