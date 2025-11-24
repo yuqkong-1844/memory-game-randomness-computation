@@ -1,6 +1,6 @@
-🧠 Probability & Statistics Memory Game
+🧠 Memory Game
 
-This is a classic memory matching game built with HTML, Tailwind CSS, and pure JavaScript. The twist? Each successful match reveals a fun fact or story about a key concept, theorem, or historical figure in probability and statistics.
+This is a classic memory matching game built with HTML, Tailwind CSS, and pure JavaScript. The twist? Each successful match reveals a fun fact or story about a key concept in randomness and computation.
 
 Play against the clock in single-player mode, or challenge a friend in the new two-player competitive mode!
 
@@ -9,8 +9,6 @@ Play against the clock in single-player mode, or challenge a friend in the new t
 You can play the live version of the game here:
 
 [https://yuqkong-1844.github.io/memory-game-randomness-computation/index.html]
-
-(Once your GitHub Pages deployment is complete, replace the text above with the actual live link.)
 
 ✨ Features
 
