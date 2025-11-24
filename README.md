@@ -16,11 +16,11 @@ Educational Twist: Match pairs to unlock detailed pop-up stories about concepts 
 
 Dual Mode Gameplay: Play the traditional single-player mode against the timer, or switch to the competitive Two-Player Mode to see who can find the most pairs.
 
-Dedicated Exhibition: Explore all 20+ probability and statistics concepts in a clean, scrollable gallery format via the separate Exhibition Mode.
+Dedicated Exhibition: Explore all 15 probability and statistics concepts in a clean, scrollable gallery format via the separate Exhibition Mode.
 
 Multilingual Support: Toggle between English (EN) and Chinese (中文) for the story content.
 
-Style Switcher: Change the visual theme of the cards (e.g., 'Original' to 'Colorful').
+Style Switcher: Change the visual theme of the cards (e.g., 'Base' to 'Colored').
 
 Responsive Design: Optimized for play on both desktop and mobile devices.
 
@@ -64,8 +64,8 @@ The project includes two main pages: the interactive game and the educational ga
 ├── exhibition.html             # The Educational Gallery page (Static content browser)
 ├── exhibition.js               # JavaScript logic for the Exhibition page (loading/rendering stories)
 ├── README.md                   # This file
-├── images/                     # Folder for the 'Original' card images
-├── images_v2/                  # Folder for the 'Colorful' card images
+├── images/                     # Folder for the 'Base' card images
+├── images_v2/                  # Folder for the 'Colored' card images
 └── card_stories/               # Folder containing all educational content in JSON format
     ├── stories.json            # English card stories
     └── stories_cn.json         # Chinese card stories (if provided)
@@ -74,6 +74,8 @@ The project includes two main pages: the interactive game and the educational ga
 
 
 🤝 Contribution and Acknowledgements
+
+This project was collaboratively developed by Gemini and me.
 
 The initial design and educational content concepts were based on the excellent work of students in the "Randomness & Computation" course.
 
